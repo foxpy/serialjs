@@ -8,6 +8,10 @@
 
 int main(int argc, char *argv[]) {
 	int fd = open(JSFILE, O_RDONLY);
+	if (fd < 0) {
+		puts("Can't open file.");
+		return EXIT_FAILURE;
+	}
 	struct js_event e;
 
 	while (read(fd, &e, sizeof(e)) == sizeof(e)) {
