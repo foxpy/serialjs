@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 char build_packet(char command, char *args, char *packet) {
@@ -16,7 +17,7 @@ char build_packet(char command, char *args, char *packet) {
 	// packet[16-30] is reserved
 
 	packet[31] = 0x00; // packet end identification
-	return 0;
+	return EXIT_SUCCESS;
 }
 
 int main(int argc, char *argv[]) {
@@ -33,5 +34,5 @@ int main(int argc, char *argv[]) {
 	}
 	printf("\n");
 
-	return 0;
+	return EXIT_SUCCESS;
 }
