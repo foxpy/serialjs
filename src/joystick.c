@@ -4,10 +4,15 @@
 #include <unistd.h>
 #include <linux/joystick.h>
 
-#define JSFILE "/dev/input/js0"
-
 int main(int argc, char *argv[]) {
-	int fd = open(JSFILE, O_RDONLY);
+	char* jsfile;
+	if (argc == 1) {
+		jsfile = "/dev/input/js0";
+	} else {
+		jsfile = argv[1];
+	}
+
+	int fd = open(jsfile, O_RDONLY);
 	if (fd < 0) {
 		puts("Can't open file.");
 		return EXIT_FAILURE;
