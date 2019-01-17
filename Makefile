@@ -3,8 +3,8 @@ CFLAGS = -Wall
 
 debug: src/packet.c src/joystick.c
 	mkdir -p bin/
-	$(CC) $(CFLAGS) -g -o bin/packet.o src/packet.c
-	$(CC) $(CFLAGS) -g -o bin/joystick.o src/joystick.c
+	$(CC) $(CFLAGS) -O0 -g -o bin/packet.o src/packet.c
+	$(CC) $(CFLAGS) -O0 -g -o bin/joystick.o src/joystick.c
 
 release: src/packet.c src/joystick.c
 	mkdir -p bin/
