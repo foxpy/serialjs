@@ -8,8 +8,8 @@ debug: src/packet.c src/joystick.c
 
 release: src/packet.c src/joystick.c
 	mkdir -p bin/
-	$(CC) $(CFLAGS) -o bin/packet.o src/packet.c
-	$(CC) $(CFLAGS) -o bin/joystick.o src/joystick.c
+	$(CC) $(CFLAGS) -O2 -o bin/packet.o src/packet.c
+	$(CC) $(CFLAGS) -O2 -o bin/joystick.o src/joystick.c
 	strip bin/packet.o bin/joystick.o
 
 clean:
