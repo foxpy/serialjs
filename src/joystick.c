@@ -4,6 +4,35 @@
 #include <unistd.h>
 #include <linux/joystick.h>
 
+#include "buttons.h"
+
+char parse_button(struct js_event *e) {
+	printf("[%d]:[", e->time);
+	switch (e->number) {
+		case A_BTN:
+			printf("A"); break;
+		case B_BTN:
+			printf("B"); break;
+		case X_BTN:
+			printf("X"); break;
+		case Y_BTN:
+			printf("Y"); break;
+		case L_BTN:
+			printf("L"); break;
+		case R_BTN:
+			printf("R"); break;
+		case BACK_BTN:
+			printf("BACK"); break;
+		case START_BTN:
+			printf("START"); break;
+		case XBOX_BTN:
+			printf("XBOX"); break;
+	}
+	printf("] %s.\n", (e->value == 0x01) ? "pressed" : "released");
+
+	return EXIT_SUCCESS;
+}
+
 int main(int argc, char *argv[]) {
 	char* jsfile;
 	if (argc == 1) {
@@ -20,8 +49,12 @@ int main(int argc, char *argv[]) {
 	struct js_event e;
 
 	while (read(fd, &e, sizeof(e)) == sizeof(e)) {
-		printf("[%d]: input 0x%08x type of 0x%02x, button: 0x%02x.\n",
-				e.time, e.value, e.type, e.number);
+		if (e.type == BUTTON_T) {
+			parse_button(&e);
+		} else {
+			printf("[%d]: input 0x%08x type of 0x%02x, button: 0x%02x.\n",
+					e.time, e.value, e.type, e.number);
+		}
 	}
 
 	close(fd);
