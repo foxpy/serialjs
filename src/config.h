@@ -23,3 +23,5 @@
 
 #define RT 4
 #define LT 5
+
+#define STICK_MIN_THRESHOLD 6000

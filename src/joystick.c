@@ -46,6 +46,14 @@ void parse_dpad(struct js_event *e) {
 }
 
 void parse_stick(struct js_event *e) {
+	short value;
+	if ((abs(e->value) < STICK_MIN_THRESHOLD) &&
+			! ((e->number == RT) || (e->number == LT))) {
+		value = 0;
+	} else {
+		value = e->value;
+	}
+
 	printf("[%d]:[", e->time);
 	switch (e->number) {
 		case LSTICK_X: printf("LEFT STICK X"); break;
@@ -55,7 +63,7 @@ void parse_stick(struct js_event *e) {
 		case RT: printf("RIGHT TRIGGER"); break;
 		case LT: printf("LEFT TRIGGER"); break;
 	}
-	printf("]: %d\n", e->value);
+	printf("]: %d\n", value);
 }
 
 
