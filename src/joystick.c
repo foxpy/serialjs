@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include <linux/joystick.h>
 
-#include "buttons.h"
+#include "config.h"
 
 void parse_button(struct js_event *e) {
 	printf("[%d]:[", e->time);
