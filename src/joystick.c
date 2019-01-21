@@ -52,7 +52,6 @@ void parse_stick(struct js_event *e) {
 		case LSTICK_Y: printf("LEFT STICK Y"); break;
 		case RSTICK_Y: printf("RIGHT STICK X"); break;
 		case RSTICK_X: printf("RIGHT STICK Y"); break;
-		// not sure if these are called as TRIGGERS...
 		case RT: printf("RIGHT TRIGGER"); break;
 		case LT: printf("LEFT TRIGGER"); break;
 	}
