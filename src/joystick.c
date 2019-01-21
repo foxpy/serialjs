@@ -89,8 +89,16 @@ int main(int argc, char *argv[]) {
 		puts("Can't open file.");
 		return EXIT_FAILURE;
 	}
-	struct js_event e;
 
+	char number_of_axes, number_of_buttons;
+	char gamepad_name[64];
+	ioctl(fd, JSIOCGAXES, &number_of_axes);
+	ioctl(fd, JSIOCGBUTTONS, &number_of_buttons);
+	ioctl(fd, JSIOCGNAME(sizeof(gamepad_name)), &gamepad_name);
+	printf("Listening for %s with %d axes and %d buttons.\n",
+			gamepad_name, number_of_axes, number_of_buttons);
+
+	struct js_event e;
 	while (read(fd, &e, sizeof(e)) == sizeof(e)) {
 		switch (e.type) {
 			case JS_EVENT_BUTTON: parse_button(&e); break;
