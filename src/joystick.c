@@ -58,11 +58,6 @@ void parse_stick(struct js_event *e) {
 	printf("]: %d\n", e->value);
 }
 
-void log_event(struct js_event *e) {
-	printf("[%d]: input 0x%08x type of 0x%02x, button: 0x%02x.\n",
-			e->time, e->value, e->type, e->number);
-}
-
 
 int main(int argc, char *argv[]) {
 	char* jsfile;
