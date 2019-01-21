@@ -59,8 +59,15 @@ void parse_stick(struct js_event *e) {
 	}
 	printf("[%d]:[", e->time);
 	switch (e->number) {
+		case LSTICK_X: printf("LEFT STICK X"); break;
+		case LSTICK_Y: printf("LEFT STICK Y"); break;
+		case RSTICK_Y: printf("RIGHT STICK X"); break;
+		case RSTICK_X: printf("RIGHT STICK Y"); break;
+		// not sure if these are called as TRIGGERS...
+		case RT: printf("RIGHT TRIGGER"); break;
+		case LT: printf("LEFT TRIGGER"); break;
 	}
-	printf("] %d.\n", e->value);
+	printf("]: %d\n", e->value);
 }
 
 void log_event(struct js_event *e) {

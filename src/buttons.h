@@ -15,3 +15,11 @@
 #define DPAD_DOWN 32767
 #define DPAD_RIGHT 32767
 #define DPAD_LEFT -32767
+
+#define LSTICK_X 0
+#define LSTICK_Y 1
+#define RSTICK_X 3
+#define RSTICK_Y 2
+
+#define RT 4
+#define LT 5
