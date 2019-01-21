@@ -10,3 +10,8 @@
 
 #define DPAD_X 6
 #define DPAD_Y 7
+
+#define DPAD_UP -32767
+#define DPAD_DOWN 32767
+#define DPAD_RIGHT 32767
+#define DPAD_LEFT -32767

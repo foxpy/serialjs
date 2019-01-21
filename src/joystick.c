@@ -22,11 +22,31 @@ void parse_button(struct js_event *e) {
 	printf("] %s.\n", (e->value == 0x01) ? "pressed" : "released");
 }
 
+void parse_dpad(struct js_event *e) {
+	printf("[%d]:[", e->time);
+	if ((e->number == DPAD_Y) && (e->value == DPAD_UP)) {
+		printf("DPAD UP");
+	} else if ((e->number == DPAD_Y) && (e->value == DPAD_DOWN)) {
+		printf("DPAD DOWN");
+	} else if ((e->number == DPAD_Y) && (e->value == 0)) {
+		printf("DPAD Y ZERO");
+	} else if ((e->number == DPAD_X) && (e->value == DPAD_RIGHT)) {
+		printf("DPAD RIGHT");
+	} else if ((e->number == DPAD_X) && (e->value == DPAD_LEFT)) {
+		printf("DPAD LEFT");
+	} else if ((e->number == DPAD_X) && (e->value == 0)) {
+		printf("DPAD X ZERO");
+	}
+	printf("]\n");
+}
+
 void parse_stick(struct js_event *e) {
+	if ((e->number == DPAD_X) || (e->number == DPAD_Y)) {
+		parse_dpad(e);
+		return;
+	}
 	printf("[%d]:[", e->time);
 	switch (e->number) {
-		case DPAD_X: printf("DPAD X"); break;
-		case DPAD_Y: printf("DPAD Y"); break;
 	}
 	printf("] %d.\n", e->value);
 }
