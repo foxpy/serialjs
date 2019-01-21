@@ -7,3 +7,6 @@
 #define BACK_BTN 6
 #define START_BTN 7
 #define XBOX_BTN 8
+
+#define DPAD_X 6
+#define DPAD_Y 7
