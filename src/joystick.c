@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
 	struct js_event e;
 
 	while (read(fd, &e, sizeof(e)) == sizeof(e)) {
-		if (e.type == BUTTON_T) {
+		if (e.type == JS_EVENT_BUTTON) {
 			parse_button(&e);
 		} else {
 			printf("[%d]: input 0x%08x type of 0x%02x, button: 0x%02x.\n",

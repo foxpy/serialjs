@@ -1,6 +1,3 @@
-#define BUTTON_T 1
-#define STICK_T 2
-
 #define A_BTN 0
 #define B_BTN 1
 #define X_BTN 2
