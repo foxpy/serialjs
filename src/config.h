@@ -15,6 +15,7 @@
 #define DPAD_DOWN 32767
 #define DPAD_RIGHT 32767
 #define DPAD_LEFT -32767
+#define DPAD_CENTERED 0
 
 #define LSTICK_X 0
 #define LSTICK_Y 1

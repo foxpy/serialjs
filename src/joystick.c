@@ -26,12 +26,12 @@ void parse_dpad(struct js_event *e) {
 	static char x, y; // DPAD state
 	printf("[%d]:[DPAD]: ", e->time);
 
-	if ((e->number == DPAD_Y) && (e->value == DPAD_UP)) { y = 1; }
-	else if ((e->number == DPAD_Y) && (e->value == DPAD_DOWN)) { y = -1; }
-	else if ((e->number == DPAD_Y) && (e->value == 0)) { y = 0; }
-	else if ((e->number == DPAD_X) && (e->value == DPAD_RIGHT)) { x = 1; }
-	else if ((e->number == DPAD_X) && (e->value == DPAD_LEFT)) { x = -1; }
-	else if ((e->number == DPAD_X) && (e->value == 0)) { x = 0; }
+	if ((e->number == DPAD_Y) && (e->value == DPAD_UP)) {y = 1;}
+	else if ((e->number == DPAD_Y) && (e->value == DPAD_DOWN)) {y = -1;}
+	else if ((e->number == DPAD_Y) && (e->value == DPAD_CENTERED)) {y = 0;}
+	else if ((e->number == DPAD_X) && (e->value == DPAD_RIGHT)) {x = 1;}
+	else if ((e->number == DPAD_X) && (e->value == DPAD_LEFT)) {x = -1;}
+	else if ((e->number == DPAD_X) && (e->value == DPAD_CENTERED)) {x = 0;}
 
 	if ((x == 0) && (y == 1)) { printf("UP"); }
 	else if ((x == 1) && (y == 1)) { printf("UPRIGHT"); }
