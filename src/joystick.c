@@ -34,14 +34,14 @@ void parse_dpad(struct js_event *e) {
 	else if ((e->number == DPAD_X) && (e->value == 0)) { x = 0; }
 
 	if ((x == 0) && (y == 1)) { printf("UP"); }
-	else if ((x == 1) && (y == 1)) { printf("UP-RIGHT"); }
+	else if ((x == 1) && (y == 1)) { printf("UPRIGHT"); }
 	else if ((x == 1) && (y == 0)) { printf("RIGHT"); }
-	else if ((x == 1) && (y == -1)) { printf("DOWN-RIGHT"); }
+	else if ((x == 1) && (y == -1)) { printf("DOWNRIGHT"); }
 	else if ((x == 0) && (y == -1)) { printf("DOWN"); }
-	else if ((x == -1) && (y == -1)) { printf("DOWN-LEFT"); }
+	else if ((x == -1) && (y == -1)) { printf("DOWNLEFT"); }
 	else if ((x == -1) && (y == 0)) { printf("LEFT"); }
-	else if ((x == -1) && (y == 1)) { printf("UP-LEFT"); }
-	else printf("ZERO");
+	else if ((x == -1) && (y == 1)) { printf("UPLEFT"); }
+	else printf("CENTERED");
 	printf("\n");
 }
 
