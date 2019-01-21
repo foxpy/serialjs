@@ -23,21 +23,33 @@ void parse_button(struct js_event *e) {
 }
 
 void parse_dpad(struct js_event *e) {
-	printf("[%d]:[", e->time);
+	static char x, y; // DPAD state
+	printf("[%d]:[DPAD]: ", e->time);
+
 	if ((e->number == DPAD_Y) && (e->value == DPAD_UP)) {
-		printf("DPAD UP");
+		y = 1;
 	} else if ((e->number == DPAD_Y) && (e->value == DPAD_DOWN)) {
-		printf("DPAD DOWN");
+		y = -1;
 	} else if ((e->number == DPAD_Y) && (e->value == 0)) {
-		printf("DPAD Y ZERO");
+		y = 0;
 	} else if ((e->number == DPAD_X) && (e->value == DPAD_RIGHT)) {
-		printf("DPAD RIGHT");
+		x = 1;
 	} else if ((e->number == DPAD_X) && (e->value == DPAD_LEFT)) {
-		printf("DPAD LEFT");
+		x = -1;
 	} else if ((e->number == DPAD_X) && (e->value == 0)) {
-		printf("DPAD X ZERO");
+		x = 0;
 	}
-	printf("]\n");
+
+	if ((x == 0) && (y == 1)) { printf("UP"); }
+	else if ((x == 1) && (y == 1)) { printf("UP-RIGHT"); }
+	else if ((x == 1) && (y == 0)) { printf("RIGHT"); }
+	else if ((x == 1) && (y == -1)) { printf("DOWN-RIGHT"); }
+	else if ((x == 0) && (y == -1)) { printf("DOWN"); }
+	else if ((x == -1) && (y == -1)) { printf("DOWN-LEFT"); }
+	else if ((x == -1) && (y == 0)) { printf("LEFT"); }
+	else if ((x == -1) && (y == 1)) { printf("UP-LEFT"); }
+	else printf("ZERO");
+	printf("\n");
 }
 
 void parse_stick(struct js_event *e) {
