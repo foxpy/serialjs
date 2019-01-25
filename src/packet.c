@@ -2,34 +2,32 @@
 #include <stdlib.h>
 #include <string.h>
 
-char build_packet(char command, char *args, char *packet) {
+void build_packet(char command, char *args, char *packet) {
 	packet[0] = 0xFF; // packet start identification
 	packet[1] = command;
 
 	// command arguments
-	memcpy(packet+2, args, 12);
+	memcpy(packet+2, args, 8);
 
-	// checksum ??? TODO: Write CRC16
+	// packet[10] is reserved
+
+	// checksum ??? TODO: Write CRC32
 	// (https://en.wikipedia.org/wiki/Cyclic_redundancy_check)
-	packet[14] = 0x00;
-	packet[15] = 0x00;
+	for (int i = 11; i <= 14; i++) {
+		packet[i] = 0x00;
+	}
 
-	// packet[16-30] is reserved
-
-	packet[31] = 0x00; // packet end identification
-	return EXIT_SUCCESS;
+	packet[15] = 0x00; // packet end identification
 }
 
 int main(int argc, char *argv[]) {
-	char packet[32] = {0, 0, 0, 0, 0, 0, 0, 0,
-	                   0, 0, 0, 0, 0, 0, 0, 0,
-	                   0, 0, 0, 0, 0, 0, 0, 0,
+	char packet[16] = {0, 0, 0, 0, 0, 0, 0, 0,
 	                   0, 0, 0, 0, 0, 0, 0, 0};
-	float args[3] = {4.0f, 2.0f, -12.5f};
+	float args[2] = {4.0f, -12.5f};
 	build_packet(0x10, (char*) &args, (char*) &packet);
 
 	printf("0x");
-	for (char i = 0; i <= 31; i++) {
+	for (char i = 0; i <= 15; i++) {
 		printf("%02hhx", *(packet+i));
 	}
 	printf("\n");
