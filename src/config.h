@@ -31,8 +31,11 @@
 #define RT 4
 #define LT 5
 
+// ignore input data from stick if value is less than STICK_MIN_THRESHOLD
 #define STICK_MIN_THRESHOLD 6000
 
+// these values are multiplied to values reported by driver, so user can
+// fix mixed up axes in this way
 #define LSTICK_X_MULTIPLIER 1
 #define LSTICK_Y_MULTIPLIER -1
 #define RSTICK_X_MULTIPLIER 1
