@@ -67,6 +67,18 @@ void parse_stick(struct js_event *e) {
 	printf("]: %d\n", value);
 }
 
+void parse_event(struct js_event *e) {
+	if (e->type == JS_EVENT_BUTTON) {
+		parse_button(e);
+	} else if (e->type == JS_EVENT_AXIS) {
+		if ((e->number == DPAD_X) || (e->number == DPAD_Y)) {
+			parse_dpad(e);
+		} else {
+			parse_stick(e);
+		}
+	}
+}
+
 
 int main(int argc, char *argv[]) {
 	char* jsfile;
@@ -92,15 +104,7 @@ int main(int argc, char *argv[]) {
 
 	struct js_event e;
 	while (read(fd, &e, sizeof(e)) == sizeof(e)) {
-		if (e.type == JS_EVENT_BUTTON) {
-			parse_button(&e);
-		} else if (e.type == JS_EVENT_AXIS) {
-			if ((e.number == DPAD_X) || (e.number == DPAD_Y)) {
-				parse_dpad(&e);
-			} else {
-				parse_stick(&e);
-			}
-		}
+		parse_event(&e);
 	}
 
 	close(fd);
