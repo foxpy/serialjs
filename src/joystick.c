@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <linux/joystick.h>
@@ -46,7 +47,7 @@ void parse_dpad(struct js_event *e) {
 }
 
 void parse_stick(struct js_event *e) {
-	short value;
+	int16_t value;
 	if ((abs(e->value) < STICK_MIN_THRESHOLD) &&
 			! ((e->number == RT) || (e->number == LT))) {
 		value = 0;
