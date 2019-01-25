@@ -1,3 +1,9 @@
+/*
+ * Different drivers report different values for the same gamepad.
+ * Some of them may additionally report incorrect values for sticks.
+ * Use this file to mitigate driver issues.
+ */
+
 #define A_BTN 0
 #define B_BTN 1
 #define X_BTN 2
@@ -26,3 +32,10 @@
 #define LT 5
 
 #define STICK_MIN_THRESHOLD 6000
+
+#define LSTICK_X_MULTIPLIER 1
+#define LSTICK_Y_MULTIPLIER -1
+#define RSTICK_X_MULTIPLIER 1
+#define RSTICK_Y_MULTIPLIER -1
+#define LT_MULTIPLIER 1
+#define RT_MULTIPLIER 1

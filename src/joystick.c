@@ -57,12 +57,24 @@ void parse_stick(struct js_event *e) {
 
 	printf("[%d]:[", e->time);
 	switch (e->number) {
-		case LSTICK_X: printf("LEFT STICK X"); break;
-		case LSTICK_Y: printf("LEFT STICK Y"); break;
-		case RSTICK_Y: printf("RIGHT STICK X"); break;
-		case RSTICK_X: printf("RIGHT STICK Y"); break;
-		case RT: printf("RIGHT TRIGGER"); break;
-		case LT: printf("LEFT TRIGGER"); break;
+		case LSTICK_X:
+			value *= LSTICK_X_MULTIPLIER;
+			printf("LEFT STICK X"); break;
+		case LSTICK_Y:
+			value *= LSTICK_Y_MULTIPLIER;
+			printf("LEFT STICK Y"); break;
+		case RSTICK_Y:
+			value *= RSTICK_X_MULTIPLIER;
+			printf("RIGHT STICK X"); break;
+		case RSTICK_X:
+			value *= RSTICK_Y_MULTIPLIER;
+			printf("RIGHT STICK Y"); break;
+		case RT:
+			value *= LT_MULTIPLIER;
+			printf("RIGHT TRIGGER"); break;
+		case LT:
+			value *= RT_MULTIPLIER;
+			printf("LEFT TRIGGER"); break;
 	}
 	printf("]: %d\n", value);
 }
