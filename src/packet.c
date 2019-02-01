@@ -26,7 +26,8 @@ void build_packet(char command, char *args, char *packet) {
 	// command arguments
 	memcpy(packet+2, args, 8);
 
-	// packet[10] is reserved
+	// reserved
+	packet[10] = 0x00;
 
 	// checksum
 	crc32((uint8_t*) packet+11, (uint8_t*) packet, 10);
