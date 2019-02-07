@@ -6,21 +6,31 @@
 #include <linux/joystick.h>
 
 #include "config.h"
+#include "command.h"
 
 void parse_button(struct js_event *e) {
-	printf("[%d]:[", e->time);
+	static uint8_t s = 0;
+	static char* button;
 	switch (e->number) {
-		case A_BTN: printf("A"); break;
-		case B_BTN: printf("B"); break;
-		case X_BTN: printf("X"); break;
-		case Y_BTN: printf("Y"); break;
-		case L_BTN: printf("L"); break;
-		case R_BTN: printf("R"); break;
-		case BACK_BTN: printf("BACK"); break;
-		case START_BTN: printf("START"); break;
-		case XBOX_BTN: printf("XBOX"); break;
+		case A_BTN:
+			button = "A";
+			if (e->value == 0x00) {
+				// perform action if button is released
+				s = (s) ? 0 : 1;
+				toggle_cmd(s);
+			}
+			break;
+		case B_BTN: button = "B"; break;
+		case X_BTN: button = "X"; break;
+		case Y_BTN: button = "Y"; break;
+		case L_BTN: button = "L"; break;
+		case R_BTN: button = "R"; break;
+		case BACK_BTN: button = "BACK"; break;
+		case START_BTN: button = "START"; break;
+		case XBOX_BTN: button = "XBOX"; break;
 	}
-	printf("] %s.\n", (e->value == 0x01) ? "pressed" : "released");
+	printf("[%d]:[%s] %s.\n", e->time, button,
+			(e->value == 0x01) ? "pressed" : "released");
 }
 
 void parse_dpad(struct js_event *e) {
