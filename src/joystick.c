@@ -15,7 +15,6 @@ void parse_button(struct js_event *e) {
 		case A_BTN:
 			button = "A";
 			if (e->value == 0x00) {
-				// perform action if button is released
 				s = (s) ? 0 : 1;
 				toggle_cmd(s);
 			}
@@ -23,8 +22,18 @@ void parse_button(struct js_event *e) {
 		case B_BTN: button = "B"; break;
 		case X_BTN: button = "X"; break;
 		case Y_BTN: button = "Y"; break;
-		case L_BTN: button = "L"; break;
-		case R_BTN: button = "R"; break;
+		case L_BTN:
+			button = "L";
+			if (e->value == 0x00) {
+				action_cmd(-1);
+			}
+			break;
+		case R_BTN:
+			button = "R";
+			if (e->value == 0x00) {
+				action_cmd(1);
+			}
+			break;
 		case BACK_BTN: button = "BACK"; break;
 		case START_BTN: button = "START"; break;
 		case XBOX_BTN: button = "XBOX"; break;
