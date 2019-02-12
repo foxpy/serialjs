@@ -66,6 +66,8 @@ void parse_dpad(struct js_event *e) {
 }
 
 void parse_stick(struct js_event *e) {
+	static float X = 0.0f, Y = 0.0f;
+	static char *stick;
 	int16_t value;
 	if ((abs(e->value) < STICK_MIN_THRESHOLD) &&
 			! ((e->number == RT) || (e->number == LT))) {
@@ -74,28 +76,31 @@ void parse_stick(struct js_event *e) {
 		value = e->value;
 	}
 
-	printf("[%d]:[", e->time);
 	switch (e->number) {
 		case LSTICK_X:
 			value *= LSTICK_X_MULTIPLIER;
-			printf("LEFT STICK X"); break;
+			X = value;
+			move_cmd(X, Y);
+			stick = "LEFT STICK X"; break;
 		case LSTICK_Y:
 			value *= LSTICK_Y_MULTIPLIER;
-			printf("LEFT STICK Y"); break;
+			Y = value;
+			move_cmd(X, Y);
+			stick = "LEFT STICK Y"; break;
 		case RSTICK_Y:
 			value *= RSTICK_X_MULTIPLIER;
-			printf("RIGHT STICK X"); break;
+			stick = "RIGHT STICK X"; break;
 		case RSTICK_X:
 			value *= RSTICK_Y_MULTIPLIER;
-			printf("RIGHT STICK Y"); break;
+			stick = "RIGHT STICK Y"; break;
 		case RT:
 			value *= LT_MULTIPLIER;
-			printf("RIGHT TRIGGER"); break;
+			stick = "RIGHT TRIGGER"; break;
 		case LT:
 			value *= RT_MULTIPLIER;
-			printf("LEFT TRIGGER"); break;
+			stick = "LEFT TRIGGER"; break;
 	}
-	printf("]: %d\n", value);
+	printf("[%d]:[%s]: %d\n", e->time, stick, value);
 }
 
 void parse_event(struct js_event *e) {
