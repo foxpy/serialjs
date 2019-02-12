@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <sys/stat.h>
 #include <linux/joystick.h>
 
 #include "config.h"
@@ -132,12 +133,19 @@ int main(int argc, char *argv[]) {
 
 	char number_of_axes, number_of_buttons;
 	char gamepad_name[64];
-	ioctl(fd, JSIOCGAXES, &number_of_axes);
-	ioctl(fd, JSIOCGBUTTONS, &number_of_buttons);
-	ioctl(fd, JSIOCGNAME(sizeof(gamepad_name)), &gamepad_name);
-	printf("Listening for %s with %d axes and %d buttons.\n",
-			gamepad_name, number_of_axes, number_of_buttons);
-
+	struct stat sb;
+	fstat(fd, &sb);
+	if (! S_ISCHR(sb.st_mode)) {
+		puts("Warning: not a character file, is it even a joystick?");
+	} else {
+		ioctl(fd, JSIOCGAXES, &number_of_axes);
+		ioctl(fd, JSIOCGBUTTONS, &number_of_buttons);
+		ioctl(fd, JSIOCGNAME(sizeof(gamepad_name)), &gamepad_name);
+		printf("Listening for %s with %d axes and %d buttons.\n",
+				gamepad_name,
+				number_of_axes,
+				number_of_buttons);
+	}
 	struct js_event e;
 	while (read(fd, &e, sizeof(e)) == sizeof(e)) {
 		parse_event(&e);
