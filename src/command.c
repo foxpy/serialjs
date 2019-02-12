@@ -10,11 +10,11 @@
 #define TOGGLE_CMD 0x12
 
 void show_packet(uint8_t *packet) {
-	printf("0x");
+	fprintf(stderr, "0x");
 	for (uint8_t i = 0; i < PACKET_SIZE; i++) {
-		printf("%02hhx", *(packet+i));
+		fprintf(stderr, "%02hhx", *(packet+i));
 	}
-	printf("\n");
+	fprintf(stderr, "\n");
 }
 
 void move_cmd(float x, float y) {
