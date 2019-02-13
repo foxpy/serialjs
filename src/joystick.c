@@ -25,14 +25,18 @@ void parse_button(struct js_event *e) {
 		case Y_BTN: button = "Y"; break;
 		case L_BTN:
 			button = "L";
-			if (e->value == 0x00) {
+			if (e->value == 0x01) {
 				action_cmd(-1);
+			} else {
+				action_cmd(0);
 			}
 			break;
 		case R_BTN:
 			button = "R";
-			if (e->value == 0x00) {
+			if (e->value == 0x01) {
 				action_cmd(1);
+			} else {
+				action_cmd(0);
 			}
 			break;
 		case BACK_BTN: button = "BACK"; break;
