@@ -3,7 +3,7 @@ CFLAGS = -Wall -Wextra -pedantic
 
 debug: src/joystick.c src/command.c src/packet.c
 	mkdir -p bin/
-	$(CC) $(CFLAGS) -O0 -g -o bin/joystick.o src/joystick.c src/command.c src/packet.c
+	$(CC) $(CFLAGS) -DDEBUG -O0 -g -o bin/joystick.o src/joystick.c src/command.c src/packet.c
 
 release: src/joystick.c src/command.c src/packet.c
 	mkdir -p bin/

@@ -43,13 +43,15 @@ void parse_button(struct js_event *e) {
 		case START_BTN: button = "START"; break;
 		case XBOX_BTN: button = "XBOX"; break;
 	}
-	printf("[%d]:[%s] %s.\n", e->time, button,
+#ifdef DEBUG
+	fprintf(stderr, "[%d]:[%s] %s.\n", e->time, button,
 			(e->value == 0x01) ? "pressed" : "released");
+#endif
 }
 
 void parse_dpad(struct js_event *e) {
 	static char x, y; // DPAD state
-	printf("[%d]:[DPAD]: ", e->time);
+	static char* direction;
 
 	if ((e->number == DPAD_Y) && (e->value == DPAD_UP)) {y = 1;}
 	else if ((e->number == DPAD_Y) && (e->value == DPAD_DOWN)) {y = -1;}
@@ -58,16 +60,18 @@ void parse_dpad(struct js_event *e) {
 	else if ((e->number == DPAD_X) && (e->value == DPAD_LEFT)) {x = -1;}
 	else if ((e->number == DPAD_X) && (e->value == DPAD_CENTERED)) {x = 0;}
 
-	if ((x == 0) && (y == 1)) { printf("UP"); }
-	else if ((x == 1) && (y == 1)) { printf("UPRIGHT"); }
-	else if ((x == 1) && (y == 0)) { printf("RIGHT"); }
-	else if ((x == 1) && (y == -1)) { printf("DOWNRIGHT"); }
-	else if ((x == 0) && (y == -1)) { printf("DOWN"); }
-	else if ((x == -1) && (y == -1)) { printf("DOWNLEFT"); }
-	else if ((x == -1) && (y == 0)) { printf("LEFT"); }
-	else if ((x == -1) && (y == 1)) { printf("UPLEFT"); }
-	else printf("CENTERED");
-	printf("\n");
+	if ((x == 0) && (y == 1))        { direction = "UP"; }
+	else if ((x == 1) && (y == 1))   { direction = "UPRIGHT"; }
+	else if ((x == 1) && (y == 0))   { direction = "RIGHT"; }
+	else if ((x == 1) && (y == -1))  { direction = "DOWNRIGHT"; }
+	else if ((x == 0) && (y == -1))  { direction = "DOWN"; }
+	else if ((x == -1) && (y == -1)) { direction = "DOWNLEFT"; }
+	else if ((x == -1) && (y == 0))  { direction = "LEFT"; }
+	else if ((x == -1) && (y == 1))  { direction = "UPLEFT"; }
+	else direction = "CENTERED";
+#ifdef DEBUG
+	fprintf(stderr, "[%d]:[DPAD]: %s\n", e->time, direction);
+#endif
 }
 
 void parse_stick(struct js_event *e) {
@@ -105,7 +109,9 @@ void parse_stick(struct js_event *e) {
 			value *= RT_MULTIPLIER;
 			stick = "LEFT TRIGGER"; break;
 	}
-	printf("[%d]:[%s]: %d\n", e->time, stick, value);
+#ifdef DEBUG
+	fprintf(stderr, "[%d]:[%s]: %d\n", e->time, stick, value);
+#endif
 }
 
 void parse_event(struct js_event *e) {
