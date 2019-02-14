@@ -6,12 +6,12 @@ RFLAGS = -D_FORTIFY_SOURCE=2 -O2
 
 debug: $(TARGETS)
 	mkdir -p bin/
-	$(CC) $(CFLAGS) $(DFLAGS) -o bin/joystick.o $(TARGETS)
+	$(CC) $(CFLAGS) $(DFLAGS) -o bin/joystick $(TARGETS)
 
 release: $(TARGETS)
 	mkdir -p bin/
-	$(CC) $(CFLAGS) $(RFLAGS) -o bin/joystick.o $(TARGETS)
-	strip bin/joystick.o
+	$(CC) $(CFLAGS) $(RFLAGS) -o bin/joystick $(TARGETS)
+	strip bin/joystick
 
 clean:
 	rm -rf bin/
