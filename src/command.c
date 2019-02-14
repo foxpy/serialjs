@@ -18,7 +18,10 @@ void write_packet(uint8_t *packet, int fd) {
 	}
 	printf("\n");
 #endif
-	write(fd, packet, PACKET_SIZE);
+	if (write(fd, packet, PACKET_SIZE) == -1) {
+		perror("write");
+		exit(EXIT_FAILURE);
+	}
 }
 
 void move_cmd(float x, float y, int fd) {
