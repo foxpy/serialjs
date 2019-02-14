@@ -131,7 +131,7 @@ int main(int argc, char *argv[]) {
 
 	int fd = open(jsfile, O_RDONLY);
 	if (fd < 0) {
-		puts("Can't open file.");
+		fprintf(stderr, "Can't open file: %s.\n", jsfile);
 		return EXIT_FAILURE;
 	}
 
@@ -140,7 +140,8 @@ int main(int argc, char *argv[]) {
 	struct stat sb;
 	fstat(fd, &sb);
 	if (! S_ISCHR(sb.st_mode)) {
-		puts("Warning: not a character file, is it even a joystick?");
+		fprintf(stderr, "Warning: %s is not a character file, "
+				"is it even a joystick?\n", jsfile);
 	} else {
 		ioctl(fd, JSIOCGAXES, &number_of_axes);
 		ioctl(fd, JSIOCGBUTTONS, &number_of_buttons);
