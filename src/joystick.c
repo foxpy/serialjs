@@ -11,7 +11,7 @@
 
 void process_button(struct js_event *e, int fd) {
 	static uint8_t s = 0;
-	static char* button;
+	const char *button;
 	switch (e->number) {
 		case A_BTN:
 			button = "A";
@@ -51,7 +51,7 @@ void process_button(struct js_event *e, int fd) {
 
 void process_dpad(struct js_event *e) {
 	static char x, y; // DPAD state
-	static char* direction;
+	const char *direction;
 
 	if ((e->number == DPAD_Y) && (e->value == DPAD_UP)) {y = 1;}
 	else if ((e->number == DPAD_Y) && (e->value == DPAD_DOWN)) {y = -1;}
@@ -76,7 +76,7 @@ void process_dpad(struct js_event *e) {
 
 void process_stick(struct js_event *e, int fd) {
 	static float X = 0.0f, Y = 0.0f;
-	static char *stick;
+	const char *stick;
 	int16_t value;
 	if ((abs(e->value) < STICK_MIN_THRESHOLD) &&
 			! ((e->number == RT) || (e->number == LT))) {
