@@ -9,7 +9,7 @@
 #include "config.h"
 #include "command.h"
 
-void parse_button(struct js_event *e) {
+void process_button(struct js_event *e, int fd) {
 	static uint8_t s = 0;
 	static char* button;
 	switch (e->number) {
@@ -17,7 +17,7 @@ void parse_button(struct js_event *e) {
 			button = "A";
 			if (e->value == 0x00) {
 				s = (s) ? 0 : 1;
-				toggle_cmd(s);
+				toggle_cmd(s, fd);
 			}
 			break;
 		case B_BTN: button = "B"; break;
@@ -26,17 +26,17 @@ void parse_button(struct js_event *e) {
 		case L_BTN:
 			button = "L";
 			if (e->value == 0x01) {
-				action_cmd(-1);
+				action_cmd(-1, fd);
 			} else {
-				action_cmd(0);
+				action_cmd(0, fd);
 			}
 			break;
 		case R_BTN:
 			button = "R";
 			if (e->value == 0x01) {
-				action_cmd(1);
+				action_cmd(1, fd);
 			} else {
-				action_cmd(0);
+				action_cmd(0, fd);
 			}
 			break;
 		case BACK_BTN: button = "BACK"; break;
@@ -49,7 +49,7 @@ void parse_button(struct js_event *e) {
 #endif
 }
 
-void parse_dpad(struct js_event *e) {
+void process_dpad(struct js_event *e) {
 	static char x, y; // DPAD state
 	static char* direction;
 
@@ -74,7 +74,7 @@ void parse_dpad(struct js_event *e) {
 #endif
 }
 
-void parse_stick(struct js_event *e) {
+void process_stick(struct js_event *e, int fd) {
 	static float X = 0.0f, Y = 0.0f;
 	static char *stick;
 	int16_t value;
@@ -89,12 +89,12 @@ void parse_stick(struct js_event *e) {
 		case LSTICK_X:
 			value *= LSTICK_X_MULTIPLIER;
 			X = value;
-			move_cmd(X, Y);
+			move_cmd(X, Y, fd);
 			stick = "LEFT STICK X"; break;
 		case LSTICK_Y:
 			value *= LSTICK_Y_MULTIPLIER;
 			Y = value;
-			move_cmd(X, Y);
+			move_cmd(X, Y, fd);
 			stick = "LEFT STICK Y"; break;
 		case RSTICK_Y:
 			value *= RSTICK_X_MULTIPLIER;
@@ -114,54 +114,66 @@ void parse_stick(struct js_event *e) {
 #endif
 }
 
-void parse_event(struct js_event *e) {
+void process_event(struct js_event *e, int fd) {
 	if (e->type == JS_EVENT_BUTTON) {
-		parse_button(e);
+		process_button(e, fd);
 	} else if (e->type == JS_EVENT_AXIS) {
 		if ((e->number == DPAD_X) || (e->number == DPAD_Y)) {
-			parse_dpad(e);
+			process_dpad(e);
 		} else {
-			parse_stick(e);
+			process_stick(e, fd);
 		}
 	}
 }
 
 
 int main(int argc, char *argv[]) {
-	char* jsfile;
-	if (argc == 1) {
-		jsfile = "/dev/input/js0";
-	} else {
+	char *jsfile, *acmfile;
+	if (argc >= 2) {
 		jsfile = argv[1];
+	} else {
+		jsfile = "/dev/input/js0";
 	}
 
-	int fd = open(jsfile, O_RDONLY);
-	if (fd < 0) {
+	if (argc >= 3) {
+		acmfile = argv[2];
+	} else {
+		acmfile = "/dev/ttyACM0";
+	}
+
+	int js_fd = open(jsfile, O_RDONLY);
+	if (js_fd < 0) {
 		fprintf(stderr, "Can't open file: %s.\n", jsfile);
+		return EXIT_FAILURE;
+	}
+
+	int acm_fd = open(acmfile, O_RDWR | O_NOCTTY);
+	if (acm_fd < 0) {
+		fprintf(stderr, "Can't open file: %s.\n", acmfile);
 		return EXIT_FAILURE;
 	}
 
 	char number_of_axes, number_of_buttons;
 	char gamepad_name[64];
 	struct stat sb;
-	fstat(fd, &sb);
+	fstat(js_fd, &sb);
 	if (! S_ISCHR(sb.st_mode)) {
 		fprintf(stderr, "Warning: %s is not a character file, "
 				"is it even a joystick?\n", jsfile);
 	} else {
-		ioctl(fd, JSIOCGAXES, &number_of_axes);
-		ioctl(fd, JSIOCGBUTTONS, &number_of_buttons);
-		ioctl(fd, JSIOCGNAME(sizeof(gamepad_name)), &gamepad_name);
+		ioctl(js_fd, JSIOCGAXES, &number_of_axes);
+		ioctl(js_fd, JSIOCGBUTTONS, &number_of_buttons);
+		ioctl(js_fd, JSIOCGNAME(sizeof(gamepad_name)), &gamepad_name);
 		printf("Listening for %s with %d axes and %d buttons.\n",
 				gamepad_name,
 				number_of_axes,
 				number_of_buttons);
 	}
 	struct js_event e;
-	while (read(fd, &e, sizeof(e)) == sizeof(e)) {
-		parse_event(&e);
+	while (read(js_fd, &e, sizeof(e)) == sizeof(e)) {
+		process_event(&e, acm_fd);
 	}
 
-	close(fd);
+	close(js_fd);
 	return EXIT_SUCCESS;
 }
