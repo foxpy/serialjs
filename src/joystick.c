@@ -1,6 +1,8 @@
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <string.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/stat.h>
@@ -143,13 +145,15 @@ int main(int argc, char *argv[]) {
 
 	int js_fd = open(jsfile, O_RDONLY);
 	if (js_fd < 0) {
-		fprintf(stderr, "Can't open file: %s.\n", jsfile);
+		fprintf(stderr, "Can't open file: %s (%s).\n",
+				jsfile, strerror(errno));
 		return EXIT_FAILURE;
 	}
 
-	int acm_fd = open(acmfile, O_RDWR | O_NOCTTY);
+	int acm_fd = open(acmfile, O_RDWR | O_NOCTTY | O_SYNC);
 	if (acm_fd < 0) {
-		fprintf(stderr, "Can't open file: %s.\n", acmfile);
+		fprintf(stderr, "Can't open file: %s (%s).\n",
+				acmfile, strerror(errno));
 		return EXIT_FAILURE;
 	}
 
