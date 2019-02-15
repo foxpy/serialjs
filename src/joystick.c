@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
+#include <termios.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/stat.h>
@@ -10,6 +11,7 @@
 
 #include "config.h"
 #include "command.h"
+#include "serial.h"
 
 void process_button(struct js_event *e, int fd) {
 	static uint8_t s = 0;
@@ -156,6 +158,7 @@ int main(int argc, char *argv[]) {
 				acmfile, strerror(errno));
 		return EXIT_FAILURE;
 	}
+	setup_serial_interface(acm_fd, B115200, 0);
 
 	char number_of_axes, number_of_buttons;
 	char gamepad_name[64];

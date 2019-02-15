@@ -1,6 +1,6 @@
 CC = clang
-TARGETS = src/joystick.c src/command.c src/packet.c
-CFLAGS = -Wall -Wextra -pedantic -std=c99
+TARGETS = src/joystick.c src/command.c src/packet.c src/serial.c
+CFLAGS = -Wall -Wextra -pedantic -std=gnu99
 DFLAGS = -DDEBUG -O0 -g
 RFLAGS = -D_FORTIFY_SOURCE=2 -O2
 
