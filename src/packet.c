@@ -3,23 +3,24 @@
 #include <stdint.h>
 #include <string.h>
 
-void crc32(uint8_t *dst, uint8_t *data, uint32_t len) {
+void crc32(uint8_t *dst, uint8_t *data, uint32_t len)
+{
 	uint32_t val;
 	uint32_t crc = 0xFFFFFFFF;
 
 	while(len--) {
 		val = (crc ^ *(data++)) & 0xFF;
-		for (char i = 0; i < 8; i++) {
-			val = (val & 1) ? (val>>1) ^ 0xEDB88320 : val>>1;
-		}
-		crc = val ^ crc>>8;
+		for (char i = 0; i < 8; i++)
+			val = (val & 1) ? (val >> 1) ^ 0xEDB88320 : val >> 1;
+		crc = val ^ crc >> 8;
 	}
 	crc ^= 0xFFFFFFFF;
 
 	memcpy(dst, &crc, sizeof(crc));
 }
 
-void build_packet(char command, char *args, char *packet) {
+void build_packet(char command, char *args, char *packet)
+{
 	packet[0] = 0xFF; // packet start identification
 	packet[1] = command;
 
