@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
 			acmfile, strerror(errno));
 		return EXIT_FAILURE;
 	}
-	setup_serial_interface(acm_fd, B115200, 0);
+	setup_serial_interface(acm_fd, BAUDRATE, 0);
 
 	char number_of_axes, number_of_buttons;
 	char gamepad_name[64];

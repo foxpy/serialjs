@@ -42,3 +42,10 @@
 #define RSTICK_Y_MULTIPLIER -1
 #define LT_MULTIPLIER 1
 #define RT_MULTIPLIER 1
+
+
+/*
+ * serial communication configuration goes here
+ */
+
+#define BAUDRATE B9600
