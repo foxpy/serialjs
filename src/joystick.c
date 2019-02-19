@@ -158,7 +158,10 @@ int main(int argc, char *argv[])
 			acmfile, strerror(errno));
 		return EXIT_FAILURE;
 	}
-	setup_serial_interface(acm_fd, BAUDRATE, 0);
+	if (setup_serial_interface(acm_fd, BAUDRATE, 0) == -1) {
+		fputs("Failed to setup ACM device\n", stderr);
+		return EXIT_FAILURE;
+	}
 
 	char number_of_axes, number_of_buttons;
 	char gamepad_name[64];

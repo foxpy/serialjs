@@ -7,11 +7,17 @@ int setup_serial_interface(int fd, int speed, int parity)
 	struct termios tty;
 	if (tcgetattr(fd, &tty) != EXIT_SUCCESS) {
 		perror("tcgetattr");
-		exit(EXIT_FAILURE);
+		return -1;
 	}
 
-	cfsetospeed (&tty, speed);
-	cfsetispeed (&tty, speed);
+	if (cfsetospeed (&tty, speed) == -1) {
+		perror("cfsetospeed");
+		return -1;
+	}
+	if (cfsetispeed (&tty, speed) == -1) {
+		perror("cfsetispeed");
+		return -1;
+	}
 
 	tty.c_cflag = (tty.c_cflag & ~CSIZE) | CS8;
 	tty.c_iflag &= ~IGNBRK;
@@ -27,7 +33,7 @@ int setup_serial_interface(int fd, int speed, int parity)
 
 	if (tcsetattr(fd, TCSANOW, &tty) != 0) {
 		perror("tcsetattr");
-		exit(EXIT_FAILURE);
+		return -1;
 	}
 	return EXIT_SUCCESS;
 }
