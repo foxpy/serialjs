@@ -25,13 +25,13 @@ void build_packet(char command, char *args, char *packet)
 	packet[1] = command;
 
 	// command arguments
-	memcpy(packet+2, args, 8);
+	memcpy(&packet[2], args, 8);
 
 	// reserved
 	packet[10] = 0x00;
 
 	// checksum
-	crc32((uint8_t*) packet+11, (uint8_t*) packet, 10);
+	crc32((uint8_t*) &packet[11], (uint8_t*) packet, 10);
 
 	packet[15] = 0x00; // packet end identification
 }
