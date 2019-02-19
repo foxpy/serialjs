@@ -184,5 +184,6 @@ int main(int argc, char *argv[])
 		process_event(&e, acm_fd);
 
 	close(js_fd);
+	close(acm_fd);
 	return EXIT_SUCCESS;
 }
