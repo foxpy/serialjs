@@ -1,4 +1,12 @@
 /*
+ * Default joystick and ACM device file locations.
+ */
+
+#define JSFILE_DEFAULT "/dev/input/js0"
+#define ACMFILE_DEFAULT "/dev/ttyACM0"
+
+
+/*
  * Different drivers report different values for the same gamepad.
  * Some of them may additionally report incorrect values for sticks.
  * Use this file to mitigate driver issues.

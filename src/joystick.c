@@ -138,12 +138,12 @@ int main(int argc, char *argv[])
 	if (argc >= 2)
 		jsfile = argv[1];
 	else
-		jsfile = "/dev/input/js0";
+		jsfile = JSFILE_DEFAULT;
 
 	if (argc >= 3)
 		acmfile = argv[2];
 	else
-		acmfile = "/dev/ttyACM0";
+		acmfile = ACMFILE_DEFAULT;
 
 	int js_fd = open(jsfile, O_RDONLY);
 	if (js_fd < 0) {
