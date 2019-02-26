@@ -1,12 +1,6 @@
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <string.h>
-#include <termios.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/stat.h>
 #include <linux/joystick.h>
 
 #include "config.h"

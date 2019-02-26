@@ -1,3 +1,5 @@
+#include <termios.h>
+
 /*
  * Default joystick and ACM device file locations.
  */
