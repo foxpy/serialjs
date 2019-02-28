@@ -47,7 +47,7 @@ void process_button(struct js_event *e, int fd)
 
 void process_dpad(struct js_event *e)
 {
-	static char x, y; // DPAD state
+	static int8_t x, y; // DPAD state
 	const char *direction;
 
 	if      ((e->number == DPAD_Y) && (e->value == DPAD_UP))       y = 1;

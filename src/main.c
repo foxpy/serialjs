@@ -1,6 +1,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -13,7 +14,7 @@
 
 void log_js_data(int js_fd, char *jsfile)
 {
-	char number_of_axes, number_of_buttons;
+	uint8_t number_of_axes, number_of_buttons;
 	char gamepad_name[64];
 	struct stat sb;
 	fstat(js_fd, &sb);

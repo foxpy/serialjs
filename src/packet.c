@@ -9,7 +9,7 @@ void crc32(uint32_t *dst, void *src, size_t len)
 
 	for(size_t i = 0; i < len; i++) {
 		val = (crc ^ data[i]) & 0xFF;
-		for (char i = 0; i < 8; i++)
+		for (uint8_t i = 0; i < 8; i++)
 			val = (val & 1) ? (val >> 1) ^ 0xEDB88320 : val >> 1;
 		crc = val ^ crc >> 8;
 	}
@@ -18,7 +18,7 @@ void crc32(uint32_t *dst, void *src, size_t len)
 	*dst = crc;
 }
 
-void build_packet(char command, char *args, char *packet)
+void build_packet(uint8_t command, uint8_t *args, uint8_t *packet)
 {
 	packet[0] = 0xFF; // packet start identification
 	packet[1] = command;
