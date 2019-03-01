@@ -6,47 +6,52 @@
 #include "config.h"
 #include "command.h"
 
+#define UNUSED(var) (void)(var)
+
 void process_button(struct js_event *e, int fd)
 {
 	static uint8_t s = 0;
-	const char *button;
 	switch (e->number) {
 	case A_BTN:
-		button = "A";
 		if (e->value == 0x00) {
 			s = (s) ? 0 : 1;
 			toggle_cmd(s, fd);
 		}
 		break;
-	case B_BTN: button = "B"; break;
-	case X_BTN: button = "X"; break;
-	case Y_BTN: button = "Y"; break;
 	case L_BTN:
-		button = "L";
 		if (e->value == 0x01)
 			action_cmd(-1, fd);
 		else
 			action_cmd(0, fd);
 		break;
 	case R_BTN:
-		button = "R";
 		if (e->value == 0x01)
 			action_cmd(1, fd);
 		else
 			action_cmd(0, fd);
 		break;
-	case BACK_BTN: button = "BACK"; break;
-	case START_BTN: button = "START"; break;
-	case XBOX_BTN: button = "XBOX"; break;
 	}
+
 #ifdef DEBUG
-	fprintf(stderr, "[%d]:[%s] %s.\n", e->time, button,
-			(e->value == 0x01) ? "pressed" : "released");
+	fprintf(stderr, "[%d]:[", e->time);
+	switch(e->number) {
+	case A_BTN:     fputs("A", stderr);     break;
+	case B_BTN:     fputs("B", stderr);     break;
+	case X_BTN:     fputs("X", stderr);     break;
+	case Y_BTN:     fputs("Y", stderr);     break;
+	case L_BTN:     fputs("R", stderr);     break;
+	case R_BTN:     fputs("L", stderr);     break;
+	case BACK_BTN:  fputs("BACK", stderr);  break;
+	case START_BTN: fputs("START", stderr); break;
+	case XBOX_BTN:  fputs("XBOX", stderr);  break;
+	}
+	fprintf(stderr, "] %s.\n", e->value == 0x01 ? "pressed" : "released");
 #endif
 }
 
 void process_dpad(struct js_event *e)
 {
+#ifdef DEBUG
 	static int8_t x, y; // DPAD state
 	const char *direction;
 
@@ -66,16 +71,16 @@ void process_dpad(struct js_event *e)
 	else if ((x == -1) && (y == 0))  direction = "LEFT";
 	else if ((x == -1) && (y == 1))  direction = "UPLEFT";
 	else                             direction = "CENTERED";
-#ifdef DEBUG
 	fprintf(stderr, "[%d]:[DPAD]: %s\n", e->time, direction);
+#else
+	UNUSED(e);
 #endif
 }
 
 void process_stick(struct js_event *e, int fd)
 {
-	static float X = 0.0f, Y = 0.0f;
-	const char *stick;
 	int16_t value;
+	static float X = 0.0f, Y = 0.0f;
 	if ((abs(e->value) < STICK_MIN_THRESHOLD) &&
 			!((e->number == RT) || (e->number == LT)))
 		value = 0;
@@ -87,27 +92,30 @@ void process_stick(struct js_event *e, int fd)
 		value *= LSTICK_X_MULTIPLIER;
 		X = value;
 		move_cmd(X, Y, fd);
-		stick = "LEFT STICK X"; break;
 	case LSTICK_Y:
 		value *= LSTICK_Y_MULTIPLIER;
 		Y = value;
 		move_cmd(X, Y, fd);
-		stick = "LEFT STICK Y"; break;
 	case RSTICK_Y:
 		value *= RSTICK_X_MULTIPLIER;
-		stick = "RIGHT STICK X"; break;
 	case RSTICK_X:
 		value *= RSTICK_Y_MULTIPLIER;
-		stick = "RIGHT STICK Y"; break;
 	case RT:
 		value *= LT_MULTIPLIER;
-		stick = "RIGHT TRIGGER"; break;
 	case LT:
 		value *= RT_MULTIPLIER;
-		stick = "LEFT TRIGGER"; break;
 	}
 #ifdef DEBUG
-	fprintf(stderr, "[%d]:[%s]: %d\n", e->time, stick, value);
+	fprintf(stderr, "[%d]:[", e->time);
+	switch(e->number) {
+	case LSTICK_X: fputs("LEFT STICK X", stderr);  break;
+	case LSTICK_Y: fputs("LEFT STICK Y", stderr);  break;
+	case RSTICK_X: fputs("RIGHT STICK X", stderr); break;
+	case RSTICK_Y: fputs("RIGHT STICK Y", stderr); break;
+	case RT:       fputs("RIGHT TRIGGER", stderr); break;
+	case LT:       fputs("LEFT TRIGGER", stderr);  break;
+	}
+	fprintf(stderr, "]: %d\n", value);
 #endif
 }
 
