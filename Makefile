@@ -19,5 +19,8 @@ release: $(TARGETS)
 install: release
 	install -Dm755 'bin/serialjs' '$(DESTDIR)$(PREFIX)/bin'
 
+uninstall:
+	rm '$(DESTDIR)$(PREFIX)/bin/serialjs'
+
 clean:
 	rm -rf bin/
