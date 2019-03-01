@@ -49,8 +49,9 @@ void process_button(struct js_event *e, int fd)
 #endif
 }
 
-void process_dpad(struct js_event *e)
+void process_dpad(struct js_event *e, int fd)
 {
+	UNUSED(fd);
 #ifdef DEBUG
 	static int8_t x, y; // DPAD state
 	const char *direction;
@@ -125,7 +126,7 @@ void process_event(struct js_event *e, int fd)
 		process_button(e, fd);
 	} else if (e->type == JS_EVENT_AXIS) {
 		if ((e->number == DPAD_X) || (e->number == DPAD_Y)) {
-			process_dpad(e);
+			process_dpad(e, fd);
 		} else {
 			process_stick(e, fd);
 		}
