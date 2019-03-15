@@ -30,6 +30,10 @@ void process_button(struct js_event *e, int fd)
 		else
 			action_cmd(0, fd);
 		break;
+	case START_BTN:
+		if (e->value == 0x01)
+			abort_cmd(fd);
+		break;
 	}
 
 #ifdef DEBUG
