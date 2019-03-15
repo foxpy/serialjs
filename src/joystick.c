@@ -95,8 +95,6 @@ void process_stick(struct js_event *e, int fd)
 	switch (e->number) {
 	case LSTICK_X:
 		value *= LSTICK_X_MULTIPLIER;
-		X = value;
-		move_cmd(X, Y, fd);
 		break;
 	case LSTICK_Y:
 		value *= LSTICK_Y_MULTIPLIER;
@@ -108,6 +106,8 @@ void process_stick(struct js_event *e, int fd)
 		break;
 	case RSTICK_X:
 		value *= RSTICK_Y_MULTIPLIER;
+		X = value;
+		move_cmd(X, Y, fd);
 		break;
 	case RT:
 		value *= LT_MULTIPLIER;
