@@ -97,18 +97,24 @@ void process_stick(struct js_event *e, int fd)
 		value *= LSTICK_X_MULTIPLIER;
 		X = value;
 		move_cmd(X, Y, fd);
+		break;
 	case LSTICK_Y:
 		value *= LSTICK_Y_MULTIPLIER;
 		Y = value;
 		move_cmd(X, Y, fd);
+		break;
 	case RSTICK_Y:
 		value *= RSTICK_X_MULTIPLIER;
+		break;
 	case RSTICK_X:
 		value *= RSTICK_Y_MULTIPLIER;
+		break;
 	case RT:
 		value *= LT_MULTIPLIER;
+		break;
 	case LT:
 		value *= RT_MULTIPLIER;
+		break;
 	}
 #ifdef DEBUG
 	fprintf(stderr, "[%d]:[", e->time);
