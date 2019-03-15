@@ -37,7 +37,7 @@ void process_button(struct js_event *e, int fd)
 	}
 
 #ifdef DEBUG
-	fprintf(stderr, "[%d]:[", e->time);
+	fprintf(stderr, "[%u]:[", e->time);
 	switch(e->number) {
 	case A_BTN:     fputs("A", stderr);     break;
 	case B_BTN:     fputs("B", stderr);     break;
@@ -76,7 +76,7 @@ void process_dpad(struct js_event *e, int fd)
 	else if ((x == -1) && (y == 0))  direction = "LEFT";
 	else if ((x == -1) && (y == 1))  direction = "UPLEFT";
 	else                             direction = "CENTERED";
-	fprintf(stderr, "[%d]:[DPAD]: %s\n", e->time, direction);
+	fprintf(stderr, "[%u]:[DPAD]: %s\n", e->time, direction);
 #else
 	UNUSED(e);
 #endif
@@ -117,7 +117,7 @@ void process_stick(struct js_event *e, int fd)
 		break;
 	}
 #ifdef DEBUG
-	fprintf(stderr, "[%d]:[", e->time);
+	fprintf(stderr, "[%u]:[", e->time);
 	switch(e->number) {
 	case LSTICK_X: fputs("LEFT STICK X", stderr);  break;
 	case LSTICK_Y: fputs("LEFT STICK Y", stderr);  break;
