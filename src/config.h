@@ -35,8 +35,8 @@
 
 #define LSTICK_X 0
 #define LSTICK_Y 1
-#define RSTICK_X 3
-#define RSTICK_Y 2
+#define RSTICK_X 2
+#define RSTICK_Y 3
 
 #define RT 4
 #define LT 5
@@ -48,8 +48,8 @@
 // fix mixed up axes in this way
 #define LSTICK_X_MULTIPLIER 1
 #define LSTICK_Y_MULTIPLIER -1
-#define RSTICK_X_MULTIPLIER 1
-#define RSTICK_Y_MULTIPLIER -1
+#define RSTICK_X_MULTIPLIER -1
+#define RSTICK_Y_MULTIPLIER 1
 #define LT_MULTIPLIER 1
 #define RT_MULTIPLIER 1
 
