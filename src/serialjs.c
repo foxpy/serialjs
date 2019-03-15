@@ -60,7 +60,11 @@ int main(int argc, char *argv[])
 	}
 	if (setup_serial_interface(acm_fd, BAUDRATE, 0) == -1) {
 		fputs("Failed to setup ACM device\n", stderr);
+#ifndef DEBUG
+		// do not write packets to arbitrary (non character)
+		// files in release mode
 		return EXIT_FAILURE;
+#endif
 	}
 
 	log_js_data(js_fd, jsfile);
