@@ -28,8 +28,8 @@ able to use any file. To record 100 gamepad input events and use them in tests:
 JS_STRUCT_SIZE=8 # the size of js event struct, consult kernel documentation:
 # /path/to/your/kernel//build/Documentation/input/joydev/joystick-api.html
 packets=100
-dd if=/dev/input/js0 of=sample bs=$JS_STRUCT_SIZE count=$packets status=progress
-serialjs sample
+dd if=/dev/input/js0 of=samples/my_sample bs=$JS_STRUCT_SIZE count=$packets status=progress
+serialjs samples/my_sample
 ```
 
 ACM device is any USB virtual COM port device attached to your PC/SBC/etc.

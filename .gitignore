@@ -1,4 +1,5 @@
 bin/
-samples/
+samples/*
+!samples/.keep
 *.o
 *.out
