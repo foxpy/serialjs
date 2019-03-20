@@ -25,7 +25,7 @@ Usually your gamepad should be e. g. `/dev/input/js0`, but, actually, you are
 able to use any file. To record 100 gamepad input events and use them in tests:
 
 ```bash
-JS_STRUCT_SIZE=8 # consult kernel documentation for js event size
+JS_STRUCT_SIZE=8 # the size of js event struct, consult kernel documentation:
 # /path/to/your/kernel//build/Documentation/input/joydev/joystick-api.html
 packets=100
 dd if=/dev/input/js0 of=sample bs=$JS_STRUCT_SIZE count=$packets status=progress
