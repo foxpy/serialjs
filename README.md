@@ -12,6 +12,7 @@ a certain servo. I am using `xboxdrv` userspace driver.
 ```bash
 git clone https://github.com/foxpy/serialjs
 cd serialjs
+make release -j$(nproc)
 sudo make install
 ```
 
