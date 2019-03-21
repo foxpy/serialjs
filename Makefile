@@ -1,26 +1,37 @@
 CC = clang
-TARGETS = src/serialjs.c src/joystick.c src/command.c src/packet.c src/serial.c
 CFLAGS = -Wall -Wextra -pedantic -std=gnu99
 DFLAGS = -DDEBUG -O0 -g
 RFLAGS = -D_FORTIFY_SOURCE=2 -O2
 
-DESTDIR =
+BUILDDIR = bin
+SRCDIR = src
+EXECUTABLE = serialjs
+TARGET = bin/$(EXECUTABLE)
+
 PREFIX := /usr/local
 
-debug: $(TARGETS)
-	mkdir -p bin/
-	$(CC) $(CFLAGS) $(DFLAGS) -o bin/serialjs $(TARGETS)
+SOURCES = $(shell find $(SRCDIR) -name *.c)
+OBJECTS = $(SOURCES:%=$(BUILDDIR)/%.o)
 
-release: $(TARGETS)
-	mkdir -p bin/
-	$(CC) $(CFLAGS) $(RFLAGS) -o bin/serialjs $(TARGETS)
-	strip bin/serialjs
+debug: CFLAGS += $(DFLAGS)
+debug: $(TARGET)
 
-install: release
-	install -Dm755 'bin/serialjs' '$(DESTDIR)$(PREFIX)/bin'
+release: CFLAGS += $(RFLAGS)
+release: $(TARGET)
+	strip $^
+
+$(BUILDDIR)/%.c.o: %.c
+	mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(TARGET): $(OBJECTS)
+	$(CC) -o $@ $^
+
+install:
+	install -Dm755 $(TARGET) '$(PREFIX)/bin'
 
 uninstall:
-	rm '$(DESTDIR)$(PREFIX)/bin/serialjs'
+	rm '$(PREFIX)/bin/$(EXECUTABLE)'
 
 clean:
-	rm -rf bin/
+	rm -fv $(TARGET) $(OBJECTS)
