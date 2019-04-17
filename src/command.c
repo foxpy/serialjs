@@ -1,31 +1,12 @@
 #include <stdint.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
 
 #include "packet.h"
 
-#define PACKET_SIZE 16
 #define MOVE_CMD 0x01
 #define ACTION_CMD 0x11
 #define TOGGLE_CMD 0x12
 #define ABORT_CMD 0x21
 
-
-void write_packet(uint8_t *packet, int fd)
-{
-#ifdef DEBUG
-	printf("0x");
-	for (uint8_t i = 0; i < PACKET_SIZE; i++) {
-		printf("%02hhx", packet[i]);
-	}
-	printf("\n");
-#endif
-	if (write(fd, packet, PACKET_SIZE) == -1) {
-		perror("write");
-		exit(EXIT_FAILURE);
-	}
-}
 
 void move_cmd(float x, float y, int fd)
 {

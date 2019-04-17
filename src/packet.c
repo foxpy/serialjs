@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+
+#include "packet.h"
 
 void crc32(uint32_t *dst, void *src, size_t len)
 {
@@ -33,4 +37,19 @@ void build_packet(uint8_t command, uint8_t *args, uint8_t *packet)
 	crc32((uint32_t*) &packet[11], packet, 10);
 
 	packet[15] = 0x00; // packet end identification
+}
+
+void write_packet(uint8_t *packet, int fd)
+{
+#ifdef DEBUG
+        printf("0x");
+        for (uint8_t i = 0; i < PACKET_SIZE; i++) {
+                printf("%02hhx", packet[i]);
+        }
+        printf("\n");
+#endif
+        if (write(fd, packet, PACKET_SIZE) == -1) {
+                perror("write");
+                exit(EXIT_FAILURE);
+        }
 }
