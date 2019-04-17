@@ -1,11 +1,7 @@
 #include <stdint.h>
 
 #include "packet.h"
-
-#define MOVE_CMD 0x01
-#define ACTION_CMD 0x11
-#define TOGGLE_CMD 0x12
-#define ABORT_CMD 0x21
+#include "command.h"
 
 
 void move_cmd(float x, float y, int fd)
