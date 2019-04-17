@@ -8,31 +8,31 @@
 
 #define UNUSED(var) (void)(var)
 
-void process_button(struct js_event *e, int fd)
+void process_button(struct js_event *e)
 {
 	static uint8_t s = 0;
 	switch (e->number) {
 	case A_BTN:
 		if (e->value == 0x00) {
 			s = (s) ? 0 : 1;
-			toggle_cmd(s, fd);
+			toggle_cmd(s);
 		}
 		break;
 	case L_BTN:
 		if (e->value == 0x01)
-			action_cmd(-1, fd);
+			action_cmd(-1);
 		else
-			action_cmd(0, fd);
+			action_cmd(0);
 		break;
 	case R_BTN:
 		if (e->value == 0x01)
-			action_cmd(1, fd);
+			action_cmd(1);
 		else
-			action_cmd(0, fd);
+			action_cmd(0);
 		break;
 	case START_BTN:
 		if (e->value == 0x01)
-			abort_cmd(fd);
+			abort_cmd();
 		break;
 	}
 
@@ -53,9 +53,8 @@ void process_button(struct js_event *e, int fd)
 #endif
 }
 
-void process_dpad(struct js_event *e, int fd)
+void process_dpad(struct js_event *e)
 {
-	UNUSED(fd);
 #ifdef DEBUG
 	static int8_t x, y; // DPAD state
 	const char *direction;
@@ -82,7 +81,7 @@ void process_dpad(struct js_event *e, int fd)
 #endif
 }
 
-void process_stick(struct js_event *e, int fd)
+void process_stick(struct js_event *e)
 {
 	int16_t value;
 	static float X = 0.0f, Y = 0.0f;
@@ -99,7 +98,7 @@ void process_stick(struct js_event *e, int fd)
 	case LSTICK_Y:
 		value *= LSTICK_Y_MULTIPLIER;
 		Y = value;
-		move_cmd(X, Y, fd);
+		move_cmd(X, Y);
 		break;
 	case RSTICK_Y:
 		value *= RSTICK_X_MULTIPLIER;
@@ -107,7 +106,7 @@ void process_stick(struct js_event *e, int fd)
 	case RSTICK_X:
 		value *= RSTICK_Y_MULTIPLIER;
 		X = value;
-		move_cmd(X, Y, fd);
+		move_cmd(X, Y);
 		break;
 	case RT:
 		value *= LT_MULTIPLIER;
@@ -130,15 +129,15 @@ void process_stick(struct js_event *e, int fd)
 #endif
 }
 
-void process_event(struct js_event *e, int fd)
+void process_event(struct js_event *e)
 {
 	if (e->type == JS_EVENT_BUTTON) {
-		process_button(e, fd);
+		process_button(e);
 	} else if (e->type == JS_EVENT_AXIS) {
 		if ((e->number == DPAD_X) || (e->number == DPAD_Y)) {
-			process_dpad(e, fd);
+			process_dpad(e);
 		} else {
-			process_stick(e, fd);
+			process_stick(e);
 		}
 	}
 }

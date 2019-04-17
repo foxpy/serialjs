@@ -9,6 +9,7 @@
 #include <linux/joystick.h>
 
 #include "config.h"
+#include "packet.h"
 #include "serial.h"
 #include "joystick.h"
 
@@ -52,7 +53,7 @@ int main(int argc, char *argv[])
 		return EXIT_FAILURE;
 	}
 
-	int acm_fd = open(acmfile, O_RDWR | O_NOCTTY | O_SYNC);
+	acm_fd = open(acmfile, O_RDWR | O_NOCTTY | O_SYNC);
 	if (acm_fd < 0) {
 		fprintf(stderr, "Can't open file: %s (%s).\n",
 			acmfile, strerror(errno));
@@ -71,7 +72,7 @@ int main(int argc, char *argv[])
 
 	struct js_event e;
 	while (read(js_fd, &e, sizeof(e)) == sizeof(e))
-		process_event(&e, acm_fd);
+		process_event(&e);
 
 	close(js_fd);
 	close(acm_fd);

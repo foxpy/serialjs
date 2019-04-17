@@ -6,6 +6,8 @@
 
 #include "packet.h"
 
+int acm_fd;
+
 void crc32(uint32_t *dst, void *src, size_t len)
 {
 	uint8_t *data = src;
@@ -39,7 +41,7 @@ void build_packet(uint8_t command, uint8_t *args, uint8_t *packet)
 	packet[15] = 0x00; // packet end identification
 }
 
-void write_packet(uint8_t *packet, int fd)
+void write_packet(uint8_t *packet)
 {
 #ifdef DEBUG
         printf("0x");
@@ -48,7 +50,7 @@ void write_packet(uint8_t *packet, int fd)
         }
         printf("\n");
 #endif
-        if (write(fd, packet, PACKET_SIZE) == -1) {
+        if (write(acm_fd, packet, PACKET_SIZE) == -1) {
                 perror("write");
                 exit(EXIT_FAILURE);
         }
