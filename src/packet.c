@@ -24,8 +24,10 @@ void crc32(uint32_t *dst, void *src, size_t len)
 	*dst = crc;
 }
 
-void build_packet(uint8_t command, uint8_t *args, uint8_t *packet)
+void build_packet(uint8_t command, void *args, void *dst)
 {
+	uint8_t *packet = dst;
+
 	packet[0] = 0xFF; // packet start identification
 	packet[1] = command;
 
@@ -41,16 +43,17 @@ void build_packet(uint8_t command, uint8_t *args, uint8_t *packet)
 	packet[15] = 0x00; // packet end identification
 }
 
-void write_packet(uint8_t *packet)
+void write_packet(void *packet)
 {
+	uint8_t *data = packet;
 #ifdef DEBUG
         printf("0x");
         for (uint8_t i = 0; i < PACKET_SIZE; i++) {
-                printf("%02hhx", packet[i]);
+                printf("%02hhx", data[i]);
         }
         printf("\n");
 #endif
-        if (write(acm_fd, packet, PACKET_SIZE) == -1) {
+        if (write(acm_fd, data, PACKET_SIZE) == -1) {
                 perror("write");
                 exit(EXIT_FAILURE);
         }
