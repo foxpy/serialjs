@@ -39,7 +39,7 @@ a particular device is attached.
 
 `/etc/udev/rules.d/99-serialjs.rules`:
 ```
-SUBSYSTEM=="tty", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="5740", RUN += "/usr/bin/bash -c 'killall serialjs; serialjs /dev/input/js0 /dev/ttyACM%n'"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="5740", RUN += "/usr/bin/bash -c 'killall serialjs; systemd-run serialjs /dev/input/js0 /dev/ttyACM%n'"
 ```
 
 For testing, you can specify arbitrary file as a second argument, the only
