@@ -19,7 +19,7 @@ sudo make install
 ## How to use
 
 ```bash
-serialjs [joystick] [acm device]
+serialjs [joystick [acm device]]
 ```
 
 Usually your gamepad should be e. g. `/dev/input/js0`, but, actually, you are
