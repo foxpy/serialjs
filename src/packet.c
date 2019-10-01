@@ -15,7 +15,7 @@ void crc32(uint32_t *dst, void *src, size_t len)
 
 	for(size_t i = 0; i < len; i++) {
 		val = (crc ^ data[i]) & 0xFF;
-		for (uint8_t i = 0; i < 8; i++)
+		for (uint8_t j = 0; j < 8; j++)
 			val = (val & 1) ? (val >> 1) ^ 0xEDB88320 : val >> 1;
 		crc = val ^ crc >> 8;
 	}
